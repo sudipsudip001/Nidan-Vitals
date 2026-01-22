@@ -29,4 +29,4 @@ Steps for running the project locally:
 
 (NOTE: The application requires Postgresql installed in your system.)
 
-The demonstration link is given here: ()
+The demonstration link is given here: (https://youtu.be/-8Q9zMUZMfw)
