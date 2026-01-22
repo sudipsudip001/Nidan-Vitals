@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Depends, Query
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from sqlalchemy.orm import Session
 from fhir.resources.observation import Observation
@@ -18,6 +19,14 @@ async def lifespan(app: FastAPI):
     print("Application shutting down")
 
 app = FastAPI(title="Nidan Vitals API", lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def calculate_bmi_category(bmi: float) -> str:
     if bmi < 18.5:
