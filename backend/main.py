@@ -66,10 +66,17 @@ def main():
 def create_observation(payload: dict, db: Session = Depends(get_db)):
     try:
         observation = Observation(**payload)
-
+ 
         observation_id = observation.id or str(uuid.uuid4())
 
         patient_id = observation.subject.reference.split("/")[-1] if observation.subject else "Unknown"
+
+        existing = db.query(Patients).filter(Patients.patient_id == patient_id).first()
+        if existing:
+            raise HTTPException(
+                status_code=409,
+                detail=f"Patient {patient_id} already has an observation record."
+            )
 
         try:
             resource_dict = observation.model_dump(mode='json')
